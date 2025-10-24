@@ -1,22 +1,30 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState, useRef } from 'react';
 import { View, Dimensions, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import CardImageCarousel from '../molecules/CardImageCarousel';
 import ProfileCard from '../molecules/ProfileCard';
+import { ThemeColors } from '../theme/colors';
+import { CardData } from '../data/dummy';
 
 const { height, width } = Dimensions.get('window');
 
-export const SwipeCard = ({ data }: { data: any[] }) => {
+interface SwipeCardProps {
+  data: CardData[];
+  handleSwipeRight?: (index: number) => void;
+  handleSwipeLeft?: (index: number) => void;
+  isLabel?: boolean;
+}
+
+export const SwipeCard = ({
+  handleSwipeRight,
+  handleSwipeLeft,
+  data,
+  isLabel = true,
+}: SwipeCardProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const swiperRef = useRef<Swiper<any>>(null);
-
-  const handleSwipeRight = (index: number) => {};
-
-  const handleSwipeLeft = (index: number) => {
-    console.log(`Nope: ${data[index].name}`);
-  };
 
   return (
     <Swiper
@@ -25,14 +33,17 @@ export const SwipeCard = ({ data }: { data: any[] }) => {
       cardIndex={currentIndex}
       onSwipedRight={handleSwipeRight}
       onSwipedLeft={handleSwipeLeft}
+      cardStyle={{
+        backgroundColor: ThemeColors.SOFT_BLUE,
+      }}
       onSwiped={index => {
         setCurrentIndex(index + 1);
       }}
-      renderCard={(card: any, index) => {
+      renderCard={(card: CardData, index) => {
         const isActive = index === currentIndex;
 
         return (
-          <View style={styles.card}>
+          <View style={styles.card} key={card.id}>
             <CardImageCarousel images={card.pictures} isActive={isActive} />
 
             <ProfileCard
@@ -48,7 +59,7 @@ export const SwipeCard = ({ data }: { data: any[] }) => {
       }}
       stackSize={3}
       stackSeparation={-10}
-      stackScale={0.9}
+      stackScale={1}
       cardHorizontalMargin={10}
       cardVerticalMargin={30}
       backgroundColor={'transparent'}
@@ -56,48 +67,48 @@ export const SwipeCard = ({ data }: { data: any[] }) => {
       infinite
       animateCardOpacity
       showSecondCard
-      overlayLabels={{
-        left: {
-          element: (
-            <View style={{ flex: 1 }}>
-              <Image
-                source={require('../assets/images/nope.png')}
-                style={styles.nopeIcon}
-              />
-
-              <Image
-                source={require('../assets/images/x.png')}
-                style={styles.xIcon}
-              />
-            </View>
-          ),
-          style: {
-            wrapper: {
-              flex: 1,
-            },
-          },
-        },
-        right: {
-          element: (
-            <View style={{ flex: 1 }}>
-              <Image
-                source={require('../assets/images/like.png')}
-                style={styles.likeIcon}
-              />
-
-              <Image
-                source={require('../assets/images/love.png')}
-                style={styles.loveIcon}
-              />
-            </View>
-          ),
-          style: {
-            wrapper: {
-              flex: 1,
-            },
-          },
-        },
-      }}
+      inputRotationRange={[-100, 0, 100]}
+      outputRotationRange={['10deg', '0deg', '-10deg']}
+      overlayLabels={
+        isLabel
+          ? {
+              left: {
+                element: (
+                  <View style={{ flex: 1 }}>
+                    <Image
+                      source={require('../assets/images/nope.png')}
+                      style={styles.nopeIcon}
+                    />
+                    <Image
+                      source={require('../assets/images/x.png')}
+                      style={styles.xIcon}
+                    />
+                  </View>
+                ),
+                style: {
+                  wrapper: { flex: 1 },
+                },
+              },
+              right: {
+                element: (
+                  <View style={{ flex: 1 }}>
+                    <Image
+                      source={require('../assets/images/like.png')}
+                      style={styles.likeIcon}
+                    />
+                    <Image
+                      source={require('../assets/images/love.png')}
+                      style={styles.loveIcon}
+                    />
+                  </View>
+                ),
+                style: {
+                  wrapper: { flex: 1 },
+                },
+              },
+            }
+          : undefined
+      }
     />
   );
 };

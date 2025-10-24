@@ -24,7 +24,18 @@ const locations = [
 ];
 const statuses = ['Online', 'Active 15m ago', 'Active 3h ago', 'Active Today'];
 
-export const dataDummy: any[] = Array.from({ length: 100 }, (_, i) => {
+export interface CardData {
+  id: number;
+  name: string;
+  age: number;
+  location: string;
+  distance: string;
+  isVerified: boolean;
+  status: string;
+  pictures: string[];
+}
+
+export const dataDummy: CardData[] = Array.from({ length: 100 }, (_, i) => {
   const randomName = names[Math.floor(Math.random() * names.length)];
   const randomAge = Math.floor(Math.random() * 12) + 20;
   const randomLocation =

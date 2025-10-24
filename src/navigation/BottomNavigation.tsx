@@ -7,6 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainScreen from '../screens/MainScreen';
 import { ThemeColors } from '../theme/colors';
+import LikeScreen from '../screens/LikeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +40,7 @@ export default function BottomTabNavigator() {
 
       <Tab.Screen
         name="LikeScreen"
-        component={() => <View />}
+        component={LikeScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <View style={styles.iconWrapper}>
